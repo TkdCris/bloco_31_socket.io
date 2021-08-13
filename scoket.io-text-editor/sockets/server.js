@@ -3,12 +3,10 @@ module.exports = (io) => {
     console.log('connected')
 
     socket.on('message', (evt) => {
-      console.log(evt, 'linha 23')
       socket.broadcast.emit('message', evt)
     });
 
     socket.on('editing', (evt) => {
-      console.log('=== editing ===')
       socket.broadcast.emit('editing', evt)
     });
   });

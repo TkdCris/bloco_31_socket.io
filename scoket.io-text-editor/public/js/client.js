@@ -1,8 +1,6 @@
 
 const socket = io('http://localhost:3000');
 
-const l = console.log;
-
 function getEl(id) {
   return document.getElementById(id)
 };
@@ -22,11 +20,9 @@ editando.addEventListener("click", (e) => {
 });
 
 socket.on('message', (data) => {
-  l('=============socket.id===========', socket.id)
   editor.value = data.text;
 });
 
 socket.on('editing', (data) => {
-  l('=============Botão===========')
   editor.disabled = data.editing;
 });
