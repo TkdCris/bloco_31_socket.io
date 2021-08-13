@@ -5,39 +5,23 @@ const app = express();
 
 const http = require('http').createServer(app);
 
-const l = console.log;
-
 const io = require('socket.io')(http, {
   cors: {
-    origin: 'http://localhost:3000', // url aceita pelo cors
-    methods: ['GET', 'POST'], // Métodos aceitos pela url
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
   }
 });
 
 const port = 3000;
-http.listen(port, () => l(`server listening on port: ${port}`));
-
-io.on('connection', (socket) => {
-  l('connected')
-  socket.on('message', (evt) => {
-    l(evt, 'linha 23')
-    socket.broadcast.emit('message', evt)
-  });
-
-  socket.on('editing', (evt) => {
-    l('=== editing ===')
-    socket.broadcast.emit('editing',evt)
-  });
-});
 
 app.use(cors());
 
 app.use(express.static(__dirname));
 
-io.on('disconnect', (evt) => {
-  l('some people left')
-});
+require('./sockets/server')(io);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
+
+http.listen(port, () => console.log(`server listening on port: ${port}`));
